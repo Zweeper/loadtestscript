@@ -1,0 +1,169 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // https://mvnrepository.com/artifact/org.apache.jmeter/ApacheJMeter_core
+    compile('org.apache.jmeter:ApacheJMeter_core:3.1') {
+        transitive = false    // Just avoid downloading half the internet
+    }
+
+    compile('org.apache.jmeter:ApacheJMeter_components:3.1') {
+        transitive = false    // Just avoid downloading half the internet
+    }
+
+    compile('org.apache.jmeter:ApacheJMeter_http:3.1') {
+        transitive = false    // Just avoid downloading half the internet
+    }
+
+    // https://mvnrepository.com/artifact/org.apache.jmeter/jorphan
+    compile('org.apache.jmeter:jorphan:3.1') {
+        transitive = false
+    }
+
+    // https://mvnrepository.com/artifact/logkit/logkit
+    compile('logkit:logkit:2.0') {
+        transitive = false
+    }
+    
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    compile('commons-io:commons-io:2.5') {
+        transitive = false
+    }
+
+    testCompile 'junit:junit:4.12'
+
+    testCompile('org.mockito:mockito-core:2.2.15')
+
+    testCompile('avalon-framework:avalon-framework:4.1.4')
+
+    testCompile 'org.assertj:assertj-core:3.8.0'
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir "${buildDir}/generated"
+        }
+    }
+}
+
+version = 'dev'
+
+task determineVersion {
+    doLast {
+        def proc = "git describe --exact-match HEAD".execute()
+        proc.waitFor()
+        if (proc.exitValue()) {
+            logger.quiet("Building development version.")
+        } else {
+            def versionTag = proc.in.readLines()[0]
+            // Check that tag matches format like v0.1.2.beta or 1.0 (OSGi version syntax)
+            if (versionTag ==~ /v?[0-9]+(\.\d+){1,2}(\.[\w\d_-]+)?/) {
+                if (versionTag.startsWith("v")) {
+                    versionTag = versionTag[1..-1]
+                }
+                logger.quiet("Building version ${versionTag}.")
+                project.version = versionTag
+
+                ext.versionDir = new File("${buildDir}", "generated/eu/luminis/jmeter/wssampler")
+                versionDir.mkdirs()
+
+                new File(versionDir, "version.properties").text = versionTag
+            } else {
+                logger.error("Version tag '${versionTag}' does not contain a valid version.");
+            }
+        }
+    }
+}
+
+compileJava.dependsOn determineVersion
+
+test {
+  testLogging {
+    afterSuite { desc, result ->
+      if (!desc.parent) { // will match the outermost suite
+        println "Test results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
+      }
+    }
+  }
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+tasks.withType(Javadoc) {
+    options.addStringOption('link', 'https://docs.oracle.com/javase/8/docs/api/')
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+group = 'net.luminis.jmeter'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            beforeDeployment { deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: project.properties.ossrhUsername, password: project.properties.ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: project.properties.ossrhUsername, password: project.properties.ossrhPassword)
+            }
+	    
+            pom.project {
+                name 'JMeter WebSocket Samplers'
+                packaging 'jar'
+                artifactId 'jmeter-websocket-samplers'
+                description 'JMeter add-on that defines a number of samplers for load testing WebSocket applications.'
+                url 'https://bitbucket.org/pjtr/jmeter-websocket-samplers'
+
+                licenses {
+                    license {
+                        name 'GNU Lesser General Public License v3'
+                        url 'https://www.gnu.org/licenses/lgpl-3.0-standalone.html'
+                        distribution 'repo'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'peterd'
+                        name 'Peter Doornbosch'
+                        email 'peter.doornbosch@luminis.eu'
+                        organization 'Luminis'
+                        organizationUrl 'http://www.luminis.eu'
+                    }
+                }
+                scm {
+                    connection 'scm:git:git://bitbucket.org/pjtr/jmeter-websocket-samplers.git'
+                    developerConnection 'scm:git:ssh://bitbucket.org:pjtr/jmeter-websocket-samplers.git'
+                    url 'https://bitbucket.org/pjtr/jmeter-websocket-samplers/src'
+                }
+            }
+        }
+    }
+}
+

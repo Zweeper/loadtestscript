@@ -5811,7 +5811,107 @@ if(assertion.equals(&quot;false&quot;)) {
                     <boolProp name="IfController.evaluateAll">false</boolProp>
                     <boolProp name="IfController.useExpression">true</boolProp>
                   </IfController>
-                  <hashTree/>
+                  <hashTree>
+                    <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="F2_6_4_select_policy" enabled="true">
+                      <boolProp name="TransactionController.includeTimers">false</boolProp>
+                      <boolProp name="TransactionController.parent">false</boolProp>
+                    </TransactionController>
+                    <hashTree>
+                      <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="F2_6_4_select_policy-0" enabled="true">
+                        <boolProp name="createNewConnection">false</boolProp>
+                        <boolProp name="TLS">false</boolProp>
+                        <stringProp name="server"></stringProp>
+                        <stringProp name="port">80</stringProp>
+                        <stringProp name="path"></stringProp>
+                        <stringProp name="connectTimeout">20000</stringProp>
+                        <boolProp name="binaryPayload">false</boolProp>
+                        <stringProp name="requestData">42/ws,[&quot;message&quot;,&quot;{\&quot;text\&quot;:\&quot;__NN_d9f9a792.a6da48|btn|KAL20210136631|เลือก\&quot;,\&quot;token\&quot;:\&quot;rNOiSqnXeHL46afjAOA_FE_QD6sC2p-EWo11-diuZPB4Zi9jbnPILY34RKP0Fx5L4B8Q8DbhQjAIuXzB8Wa1Ym0Qr-pxWm7Q3fF4rxgsqr6eN2EtQT10mx2XWt87cOUd\&quot;}&quot;]</stringProp>
+                        <stringProp name="readTimeout">${timeout}</stringProp>
+                        <boolProp name="loadDataFromFile">false</boolProp>
+                        <stringProp name="dataFile"></stringProp>
+                      </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+                      <hashTree>
+                        <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                          <stringProp name="scriptLanguage">groovy</stringProp>
+                          <stringProp name="parameters"></stringProp>
+                          <stringProp name="filename"></stringProp>
+                          <stringProp name="cacheKey">true</stringProp>
+                          <stringProp name="script">vars.putObject(&quot;loop&quot;, &quot;yes&quot;)
+vars.putObject(&quot;assert2_6_4&quot;, &quot;&quot;)</stringProp>
+                        </JSR223PostProcessor>
+                        <hashTree/>
+                      </hashTree>
+                      <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
+                        <stringProp name="WhileController.condition">${__jexl3((&quot;${loop}&quot;==&quot;yes&quot; &amp;&amp; ${counterF2_6_4} &lt; 4),)}</stringProp>
+                      </WhileController>
+                      <hashTree>
+                        <eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler" testname="F2_6_4_select_policy-1" enabled="true">
+                          <boolProp name="TLS">false</boolProp>
+                          <stringProp name="server"></stringProp>
+                          <stringProp name="port">80</stringProp>
+                          <stringProp name="path"></stringProp>
+                          <stringProp name="connectTimeout">20000</stringProp>
+                          <stringProp name="dataType">Text</stringProp>
+                          <boolProp name="createNewConnection">false</boolProp>
+                          <stringProp name="readTimeout">${timeout}</stringProp>
+                          <boolProp name="optional">false</boolProp>
+                        </eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler>
+                        <hashTree>
+                          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                            <stringProp name="scriptLanguage">groovy</stringProp>
+                            <stringProp name="parameters"></stringProp>
+                            <stringProp name="filename"></stringProp>
+                            <stringProp name="cacheKey">true</stringProp>
+                            <stringProp name="script">String response1 = prev.getResponseDataAsString();
+String count = vars.getObject(&quot;counterF2_6_4&quot;)
+String expected = &quot;สถานะการเรียกร้องสินไหมของกรมธรรม์: ${Policy Number}&quot;
+String timeout = &quot;SET_TIMEOUT&quot;
+vars.putObject(&quot;responseCheck&quot;, response1)
+if (response1.contains(expected)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert2_6_4&quot;, &quot;true&quot;)
+
+} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert2_6_4&quot;, &quot;false&quot;)
+
+} else if (count.equals(&quot;4&quot;)) {
+	vars.putObject(&quot;assert2_6_4&quot;, &quot;false&quot;)
+}
+</stringProp>
+                          </JSR223PostProcessor>
+                          <hashTree/>
+                        </hashTree>
+                        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                          <stringProp name="CounterConfig.start">1</stringProp>
+                          <stringProp name="CounterConfig.end"></stringProp>
+                          <stringProp name="CounterConfig.incr">1</stringProp>
+                          <stringProp name="CounterConfig.name">counterF2_6_4</stringProp>
+                          <stringProp name="CounterConfig.format"></stringProp>
+                          <boolProp name="CounterConfig.per_user">true</boolProp>
+                          <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+                        </CounterConfig>
+                        <hashTree/>
+                      </hashTree>
+                      <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+                        <stringProp name="scriptLanguage">groovy</stringProp>
+                        <stringProp name="parameters"></stringProp>
+                        <stringProp name="filename"></stringProp>
+                        <stringProp name="cacheKey">true</stringProp>
+                        <stringProp name="script">String assertion = vars.getObject(&quot;assert2_6_4&quot;)
+String message = vars.getObject(&quot;responseCheck&quot;)
+def failureMessage = &quot;&quot;;
+
+if(assertion.equals(&quot;false&quot;)) {
+	failureMessage += &quot;Return:&quot; + message; 
+	AssertionResult.setFailureMessage(failureMessage);
+	AssertionResult.setFailure(true); 
+}
+</stringProp>
+                      </JSR223Assertion>
+                      <hashTree/>
+                    </hashTree>
+                  </hashTree>
                 </hashTree>
               </hashTree>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="not_has_policy" enabled="true">
@@ -9991,6 +10091,938 @@ if(assertion.equals(&quot;false&quot;)) {
 </stringProp>
                 </JSR223Assertion>
                 <hashTree/>
+              </hashTree>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="F1_7_change_installment_payment" enabled="true"/>
+            <hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="F1_7_1_change_installment_payment" enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">false</boolProp>
+              </TransactionController>
+              <hashTree>
+                <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="F1_7_1_change_installment_payment-0" enabled="true">
+                  <boolProp name="createNewConnection">false</boolProp>
+                  <boolProp name="TLS">false</boolProp>
+                  <stringProp name="server"></stringProp>
+                  <stringProp name="port">80</stringProp>
+                  <stringProp name="path"></stringProp>
+                  <stringProp name="connectTimeout">20000</stringProp>
+                  <boolProp name="binaryPayload">false</boolProp>
+                  <stringProp name="requestData">42/ws,[&quot;message&quot;,&quot;{\&quot;text\&quot;:\&quot;__NN_97aa7cc5.79996|btn|เปลี่ยนงวดการชำระ|เลือก\&quot;,\&quot;token\&quot;:\&quot;${token}\&quot;}&quot;]</stringProp>
+                  <stringProp name="readTimeout">${timeout}</stringProp>
+                  <boolProp name="loadDataFromFile">false</boolProp>
+                  <stringProp name="dataFile"></stringProp>
+                </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+                <hashTree>
+                  <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters"></stringProp>
+                    <stringProp name="filename"></stringProp>
+                    <stringProp name="cacheKey">true</stringProp>
+                    <stringProp name="script">vars.putObject(&quot;loop&quot;, &quot;yes&quot;)
+vars.putObject(&quot;assert1_7_1&quot;, &quot;&quot;)</stringProp>
+                  </JSR223PostProcessor>
+                  <hashTree/>
+                </hashTree>
+                <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
+                  <stringProp name="WhileController.condition">${__jexl3((&quot;${loop}&quot;==&quot;yes&quot; &amp;&amp; ${counterF1_7_1} &lt; 4),)}</stringProp>
+                </WhileController>
+                <hashTree>
+                  <eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler" testname="F1_7_1_change_installment_payment-1" enabled="true">
+                    <boolProp name="TLS">false</boolProp>
+                    <stringProp name="server"></stringProp>
+                    <stringProp name="port">80</stringProp>
+                    <stringProp name="path"></stringProp>
+                    <stringProp name="connectTimeout">20000</stringProp>
+                    <stringProp name="dataType">Text</stringProp>
+                    <boolProp name="createNewConnection">false</boolProp>
+                    <stringProp name="readTimeout">${timeout}</stringProp>
+                    <boolProp name="optional">false</boolProp>
+                  </eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler>
+                  <hashTree>
+                    <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                      <stringProp name="scriptLanguage">groovy</stringProp>
+                      <stringProp name="parameters"></stringProp>
+                      <stringProp name="filename"></stringProp>
+                      <stringProp name="cacheKey">true</stringProp>
+                      <stringProp name="script">String response1 = prev.getResponseDataAsString();
+String count = vars.getObject(&quot;counterF1_7_1&quot;)
+String expected = &quot;การเปลี่ยนงวดการชำระเบี้ยประกัน มีทั้งหมด 3 หัวข้อ กรุณาเลือกที่เมนูด้านล่าง ที่คุณต้องการได้เลยค่ะ&quot;
+String timeout = &quot;SET_TIMEOUT&quot;
+vars.putObject(&quot;responseCheck&quot;, response1)
+if (response1.contains(expected)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_1&quot;, &quot;true&quot;)
+
+} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_1&quot;, &quot;false&quot;)
+
+} else if (count.equals(&quot;4&quot;)) {
+	vars.putObject(&quot;assert1_7_1&quot;, &quot;false&quot;)
+}
+</stringProp>
+                    </JSR223PostProcessor>
+                    <hashTree/>
+                  </hashTree>
+                  <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                    <stringProp name="CounterConfig.start">1</stringProp>
+                    <stringProp name="CounterConfig.end"></stringProp>
+                    <stringProp name="CounterConfig.incr">1</stringProp>
+                    <stringProp name="CounterConfig.name">counterF1_7_1</stringProp>
+                    <stringProp name="CounterConfig.format"></stringProp>
+                    <boolProp name="CounterConfig.per_user">true</boolProp>
+                    <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+                  </CounterConfig>
+                  <hashTree/>
+                </hashTree>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">String assertion = vars.getObject(&quot;assert1_7_1&quot;)
+String message = vars.getObject(&quot;responseCheck&quot;)
+def failureMessage = &quot;&quot;;
+
+if(assertion.equals(&quot;false&quot;)) {
+	failureMessage += &quot;Return:&quot; + message; 
+	AssertionResult.setFailureMessage(failureMessage);
+	AssertionResult.setFailure(true); 
+}
+</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="F1_7_2_ask_for_the_amount_after_change_installment" enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">false</boolProp>
+              </TransactionController>
+              <hashTree>
+                <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="F1_7_2_ask_for_the_amount_after_change_installment-0" enabled="true">
+                  <boolProp name="createNewConnection">false</boolProp>
+                  <boolProp name="TLS">false</boolProp>
+                  <stringProp name="server"></stringProp>
+                  <stringProp name="port">80</stringProp>
+                  <stringProp name="path"></stringProp>
+                  <stringProp name="connectTimeout">20000</stringProp>
+                  <boolProp name="binaryPayload">false</boolProp>
+                  <stringProp name="requestData">42/ws,[&quot;message&quot;,&quot;{\&quot;text\&quot;:\&quot;__NN_1cbf8d5e.871c53|btn|ขอทราบยอดเบี้ยประกันที่ต้องชำระหลังเปลี่ยนงวดการชำระ|เลือก\&quot;,\&quot;token\&quot;:\&quot;${token}\&quot;}&quot;]</stringProp>
+                  <stringProp name="readTimeout">${timeout}</stringProp>
+                  <boolProp name="loadDataFromFile">false</boolProp>
+                  <stringProp name="dataFile"></stringProp>
+                </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+                <hashTree>
+                  <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters"></stringProp>
+                    <stringProp name="filename"></stringProp>
+                    <stringProp name="cacheKey">true</stringProp>
+                    <stringProp name="script">vars.putObject(&quot;loop&quot;, &quot;yes&quot;)
+vars.putObject(&quot;assert1_7_2&quot;, &quot;&quot;)
+vars.putObject(&quot;assert1_7_2_is_out_of_service&quot;, &quot;false&quot;)</stringProp>
+                  </JSR223PostProcessor>
+                  <hashTree/>
+                </hashTree>
+                <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
+                  <stringProp name="WhileController.condition">${__jexl3((&quot;${loop}&quot;==&quot;yes&quot; &amp;&amp; ${counterF1_7_2} &lt; 4),)}</stringProp>
+                </WhileController>
+                <hashTree>
+                  <eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler" testname="F1_7_2_ask_for_the_amount_after_change_installment-1" enabled="true">
+                    <boolProp name="TLS">false</boolProp>
+                    <stringProp name="server"></stringProp>
+                    <stringProp name="port">80</stringProp>
+                    <stringProp name="path"></stringProp>
+                    <stringProp name="connectTimeout">20000</stringProp>
+                    <stringProp name="dataType">Text</stringProp>
+                    <boolProp name="createNewConnection">false</boolProp>
+                    <stringProp name="readTimeout">${timeout}</stringProp>
+                    <boolProp name="optional">false</boolProp>
+                  </eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler>
+                  <hashTree>
+                    <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                      <stringProp name="scriptLanguage">groovy</stringProp>
+                      <stringProp name="parameters"></stringProp>
+                      <stringProp name="filename"></stringProp>
+                      <stringProp name="cacheKey">true</stringProp>
+                      <stringProp name="script">String response1 = prev.getResponseDataAsString();
+String count = vars.getObject(&quot;counterF1_7_2&quot;)
+String expected = &quot;คุณต้องการให้เจ้าหน้าที่ติดต่อกลับในภายหลังหรือไม่คะ&quot;
+String timeout = &quot;SET_TIMEOUT&quot;
+vars.putObject(&quot;responseCheck&quot;, response1)
+if (response1.contains(expected)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_2&quot;, &quot;true&quot;)
+	vars.putObject(&quot;assert1_7_2_is_out_of_service&quot;, &quot;true&quot;)
+} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_2&quot;, &quot;false&quot;)
+
+} else if (count.equals(&quot;4&quot;)) {
+	vars.putObject(&quot;assert1_7_2&quot;, &quot;false&quot;)
+}
+</stringProp>
+                    </JSR223PostProcessor>
+                    <hashTree/>
+                  </hashTree>
+                  <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                    <stringProp name="CounterConfig.start">1</stringProp>
+                    <stringProp name="CounterConfig.end"></stringProp>
+                    <stringProp name="CounterConfig.incr">1</stringProp>
+                    <stringProp name="CounterConfig.name">counterF1_7_2</stringProp>
+                    <stringProp name="CounterConfig.format"></stringProp>
+                    <boolProp name="CounterConfig.per_user">true</boolProp>
+                    <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+                  </CounterConfig>
+                  <hashTree/>
+                </hashTree>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">String assertion = vars.getObject(&quot;assert1_7_2&quot;)
+String message = vars.getObject(&quot;responseCheck&quot;)
+def failureMessage = &quot;&quot;;
+
+if(assertion.equals(&quot;false&quot;)) {
+	failureMessage += &quot;Return:&quot; + message; 
+	AssertionResult.setFailureMessage(failureMessage);
+	AssertionResult.setFailure(true); 
+}
+</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="is_out_of_service" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(&quot;${assert1_7_2_is_out_of_service}&quot; == &quot;true&quot;,)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="F1_7_3_select_need_contact_back" enabled="true">
+                  <boolProp name="TransactionController.includeTimers">false</boolProp>
+                  <boolProp name="TransactionController.parent">false</boolProp>
+                </TransactionController>
+                <hashTree>
+                  <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="F1_7_3_select_need_contact_back-0" enabled="true">
+                    <boolProp name="createNewConnection">false</boolProp>
+                    <boolProp name="TLS">false</boolProp>
+                    <stringProp name="server"></stringProp>
+                    <stringProp name="port">80</stringProp>
+                    <stringProp name="path"></stringProp>
+                    <stringProp name="connectTimeout">20000</stringProp>
+                    <boolProp name="binaryPayload">false</boolProp>
+                    <stringProp name="requestData">42/ws,[&quot;message&quot;,&quot;{\&quot;text\&quot;:\&quot;__NN_167a334f.e7a21d|ต้องการ\&quot;,\&quot;token\&quot;:\&quot;${token}\&quot;}&quot;]</stringProp>
+                    <stringProp name="readTimeout">${timeout}</stringProp>
+                    <boolProp name="loadDataFromFile">false</boolProp>
+                    <stringProp name="dataFile"></stringProp>
+                  </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+                  <hashTree>
+                    <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                      <stringProp name="scriptLanguage">groovy</stringProp>
+                      <stringProp name="parameters"></stringProp>
+                      <stringProp name="filename"></stringProp>
+                      <stringProp name="cacheKey">true</stringProp>
+                      <stringProp name="script">vars.putObject(&quot;loop&quot;, &quot;yes&quot;)
+vars.putObject(&quot;assert1_7_3&quot;, &quot;&quot;)
+vars.putObject(&quot;assert1_7_3_is_have_policy&quot;, &quot;false&quot;)</stringProp>
+                    </JSR223PostProcessor>
+                    <hashTree/>
+                  </hashTree>
+                  <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
+                    <stringProp name="WhileController.condition">${__jexl3((&quot;${loop}&quot;==&quot;yes&quot; &amp;&amp; ${counterF1_7_3} &lt; 5),)}</stringProp>
+                  </WhileController>
+                  <hashTree>
+                    <eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler" testname="F1_7_3_select_need_contact_back-1" enabled="true">
+                      <boolProp name="TLS">false</boolProp>
+                      <stringProp name="server"></stringProp>
+                      <stringProp name="port">80</stringProp>
+                      <stringProp name="path"></stringProp>
+                      <stringProp name="connectTimeout">20000</stringProp>
+                      <stringProp name="dataType">Text</stringProp>
+                      <boolProp name="createNewConnection">false</boolProp>
+                      <stringProp name="readTimeout">${timeout}</stringProp>
+                      <boolProp name="optional">false</boolProp>
+                    </eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler>
+                    <hashTree>
+                      <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                        <stringProp name="scriptLanguage">groovy</stringProp>
+                        <stringProp name="parameters"></stringProp>
+                        <stringProp name="filename"></stringProp>
+                        <stringProp name="cacheKey">true</stringProp>
+                        <stringProp name="script">String response1 = prev.getResponseDataAsString();
+String count = vars.getObject(&quot;counterF1_7_3&quot;)
+String expected = &quot;ขออภัยค่ะ Emma ไม่พบกรมธรรม์ที่เชื่อมต่อไว้ หรือ กรมธรรม์ที่ท่านเพิ่มไว้ไม่เข้าเงื่อนไขคำขอเปลี่ยนแปลงนี้&quot;
+String expected2 = &quot;กรุณาเลือกกรมธรรม์ ที่คุณต้องการสอบถามข้อมูลได้เลยค่ะ&quot;
+
+vars.putObject(&quot;responseCheck&quot;, response1)
+
+
+if (response1.contains(expected)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_3&quot;, &quot;true&quot;)
+} else if (response1.contains(expected2)) {
+	vars.putObject(&quot;assert1_7_3_is_have_policy&quot;, &quot;true&quot;)
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_3&quot;, &quot;true&quot;)
+} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
+
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_3&quot;, &quot;false&quot;)
+
+} else if (count.equals(&quot;4&quot;)) {
+	vars.putObject(&quot;assert1_7_3&quot;, &quot;false&quot;)
+
+}</stringProp>
+                      </JSR223PostProcessor>
+                      <hashTree/>
+                    </hashTree>
+                    <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                      <stringProp name="CounterConfig.start">1</stringProp>
+                      <stringProp name="CounterConfig.end"></stringProp>
+                      <stringProp name="CounterConfig.incr">1</stringProp>
+                      <stringProp name="CounterConfig.name">counterF1_7_3</stringProp>
+                      <stringProp name="CounterConfig.format"></stringProp>
+                      <boolProp name="CounterConfig.per_user">true</boolProp>
+                      <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+                    </CounterConfig>
+                    <hashTree/>
+                  </hashTree>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters"></stringProp>
+                    <stringProp name="filename"></stringProp>
+                    <stringProp name="cacheKey">true</stringProp>
+                    <stringProp name="script">String assertion = vars.getObject(&quot;assert1_7_3&quot;)
+String message = vars.getObject(&quot;responseCheck&quot;)
+
+def failureMessage = &quot;&quot;;
+
+if(assertion.equals(&quot;false&quot;)) {
+	failureMessage += &quot;Return:&quot; + message; 
+	AssertionResult.setFailureMessage(failureMessage);
+	AssertionResult.setFailure(true); 
+}</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                  <IfController guiclass="IfControllerPanel" testclass="IfController" testname="has_policy" enabled="true">
+                    <stringProp name="IfController.condition">${__jexl3(&quot;${assert1_7_3_is_have_policy}&quot; == &quot;true&quot;,)}</stringProp>
+                    <boolProp name="IfController.evaluateAll">false</boolProp>
+                    <boolProp name="IfController.useExpression">true</boolProp>
+                  </IfController>
+                  <hashTree>
+                    <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="F1_7_4_select_policy" enabled="true">
+                      <boolProp name="TransactionController.includeTimers">false</boolProp>
+                      <boolProp name="TransactionController.parent">false</boolProp>
+                    </TransactionController>
+                    <hashTree>
+                      <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="F1_7_4_select_policy-0" enabled="true">
+                        <boolProp name="createNewConnection">false</boolProp>
+                        <boolProp name="TLS">false</boolProp>
+                        <stringProp name="server"></stringProp>
+                        <stringProp name="port">80</stringProp>
+                        <stringProp name="path"></stringProp>
+                        <stringProp name="connectTimeout">20000</stringProp>
+                        <boolProp name="binaryPayload">false</boolProp>
+                        <stringProp name="requestData">42/ws,[&quot;message&quot;,&quot;{\&quot;text\&quot;:\&quot;__NN_2e4bcd6f.4f93d2|btn|${Policy Number}|เลือก\&quot;,\&quot;token\&quot;:\&quot;${token}\&quot;}&quot;]</stringProp>
+                        <stringProp name="readTimeout">${timeout}</stringProp>
+                        <boolProp name="loadDataFromFile">false</boolProp>
+                        <stringProp name="dataFile"></stringProp>
+                      </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+                      <hashTree>
+                        <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                          <stringProp name="scriptLanguage">groovy</stringProp>
+                          <stringProp name="parameters"></stringProp>
+                          <stringProp name="filename"></stringProp>
+                          <stringProp name="cacheKey">true</stringProp>
+                          <stringProp name="script">vars.putObject(&quot;loop&quot;, &quot;yes&quot;)
+vars.putObject(&quot;assert1_7_4&quot;, &quot;&quot;)</stringProp>
+                        </JSR223PostProcessor>
+                        <hashTree/>
+                      </hashTree>
+                      <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
+                        <stringProp name="WhileController.condition">${__jexl3((&quot;${loop}&quot;==&quot;yes&quot; &amp;&amp; ${counterF1_7_4} &lt; 4),)}</stringProp>
+                      </WhileController>
+                      <hashTree>
+                        <eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler" testname="F1_7_4_select_policy-1" enabled="true">
+                          <boolProp name="TLS">false</boolProp>
+                          <stringProp name="server"></stringProp>
+                          <stringProp name="port">80</stringProp>
+                          <stringProp name="path"></stringProp>
+                          <stringProp name="connectTimeout">20000</stringProp>
+                          <stringProp name="dataType">Text</stringProp>
+                          <boolProp name="createNewConnection">false</boolProp>
+                          <stringProp name="readTimeout">${timeout}</stringProp>
+                          <boolProp name="optional">false</boolProp>
+                        </eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler>
+                        <hashTree>
+                          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                            <stringProp name="scriptLanguage">groovy</stringProp>
+                            <stringProp name="parameters"></stringProp>
+                            <stringProp name="filename"></stringProp>
+                            <stringProp name="cacheKey">true</stringProp>
+                            <stringProp name="script">String response1 = prev.getResponseDataAsString();
+String count = vars.getObject(&quot;counterF1_7_4&quot;)
+String expected = &quot;กรุณาเลือกที่เมนูด้านล่างที่คุณต้องการสอบถามได้เลยค่ะ&quot;
+String timeout = &quot;SET_TIMEOUT&quot;
+vars.putObject(&quot;responseCheck&quot;, response1)
+if (response1.contains(expected)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_4&quot;, &quot;true&quot;)
+
+} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_4&quot;, &quot;false&quot;)
+
+} else if (count.equals(&quot;4&quot;)) {
+	vars.putObject(&quot;assert1_7_4&quot;, &quot;false&quot;)
+}
+</stringProp>
+                          </JSR223PostProcessor>
+                          <hashTree/>
+                        </hashTree>
+                        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                          <stringProp name="CounterConfig.start">1</stringProp>
+                          <stringProp name="CounterConfig.end"></stringProp>
+                          <stringProp name="CounterConfig.incr">1</stringProp>
+                          <stringProp name="CounterConfig.name">counterF1_7_4</stringProp>
+                          <stringProp name="CounterConfig.format"></stringProp>
+                          <boolProp name="CounterConfig.per_user">true</boolProp>
+                          <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+                        </CounterConfig>
+                        <hashTree/>
+                      </hashTree>
+                      <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+                        <stringProp name="scriptLanguage">groovy</stringProp>
+                        <stringProp name="parameters"></stringProp>
+                        <stringProp name="filename"></stringProp>
+                        <stringProp name="cacheKey">true</stringProp>
+                        <stringProp name="script">String assertion = vars.getObject(&quot;assert1_7_4&quot;)
+String message = vars.getObject(&quot;responseCheck&quot;)
+def failureMessage = &quot;&quot;;
+
+if(assertion.equals(&quot;false&quot;)) {
+	failureMessage += &quot;Return:&quot; + message; 
+	AssertionResult.setFailureMessage(failureMessage);
+	AssertionResult.setFailure(true); 
+}
+</stringProp>
+                      </JSR223Assertion>
+                      <hashTree/>
+                    </hashTree>
+                    <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="F1_7_5_select_payment" enabled="true">
+                      <boolProp name="TransactionController.includeTimers">false</boolProp>
+                      <boolProp name="TransactionController.parent">false</boolProp>
+                    </TransactionController>
+                    <hashTree>
+                      <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="F1_7_5_select_payment-0" enabled="true">
+                        <boolProp name="createNewConnection">false</boolProp>
+                        <boolProp name="TLS">false</boolProp>
+                        <stringProp name="server"></stringProp>
+                        <stringProp name="port">80</stringProp>
+                        <stringProp name="path"></stringProp>
+                        <stringProp name="connectTimeout">20000</stringProp>
+                        <boolProp name="binaryPayload">false</boolProp>
+                        <stringProp name="requestData">42/ws,[&quot;message&quot;,&quot;{\&quot;text\&quot;:\&quot;__NN_b5d14f0e.ffbab|รายเดือน\&quot;,\&quot;token\&quot;:\&quot;${token}\&quot;}&quot;]</stringProp>
+                        <stringProp name="readTimeout">${timeout}</stringProp>
+                        <boolProp name="loadDataFromFile">false</boolProp>
+                        <stringProp name="dataFile"></stringProp>
+                      </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+                      <hashTree>
+                        <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                          <stringProp name="scriptLanguage">groovy</stringProp>
+                          <stringProp name="parameters"></stringProp>
+                          <stringProp name="filename"></stringProp>
+                          <stringProp name="cacheKey">true</stringProp>
+                          <stringProp name="script">vars.putObject(&quot;loop&quot;, &quot;yes&quot;)
+vars.putObject(&quot;assert1_7_5&quot;, &quot;&quot;)</stringProp>
+                        </JSR223PostProcessor>
+                        <hashTree/>
+                      </hashTree>
+                      <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
+                        <stringProp name="WhileController.condition">${__jexl3((&quot;${loop}&quot;==&quot;yes&quot; &amp;&amp; ${counterF1_7_5} &lt; 4),)}</stringProp>
+                      </WhileController>
+                      <hashTree>
+                        <eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler" testname="F1_7_5_select_payment-1" enabled="true">
+                          <boolProp name="TLS">false</boolProp>
+                          <stringProp name="server"></stringProp>
+                          <stringProp name="port">80</stringProp>
+                          <stringProp name="path"></stringProp>
+                          <stringProp name="connectTimeout">20000</stringProp>
+                          <stringProp name="dataType">Text</stringProp>
+                          <boolProp name="createNewConnection">false</boolProp>
+                          <stringProp name="readTimeout">${timeout}</stringProp>
+                          <boolProp name="optional">false</boolProp>
+                        </eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler>
+                        <hashTree>
+                          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                            <stringProp name="scriptLanguage">groovy</stringProp>
+                            <stringProp name="parameters"></stringProp>
+                            <stringProp name="filename"></stringProp>
+                            <stringProp name="cacheKey">true</stringProp>
+                            <stringProp name="script">String response1 = prev.getResponseDataAsString();
+String count = vars.getObject(&quot;counterF1_7_5&quot;)
+String expected = &quot;กรุณาเลือกช่องทางที่ต้องการให้เจ้าหน้าที่ศูนย์ลูกค้าสัมพันธ์ติดต่อกลับค่ะ&quot;
+String timeout = &quot;SET_TIMEOUT&quot;
+vars.putObject(&quot;responseCheck&quot;, response1)
+if (response1.contains(expected)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_5&quot;, &quot;true&quot;)
+
+} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_5&quot;, &quot;false&quot;)
+
+} else if (count.equals(&quot;4&quot;)) {
+	vars.putObject(&quot;assert1_7_5&quot;, &quot;false&quot;)
+}
+</stringProp>
+                          </JSR223PostProcessor>
+                          <hashTree/>
+                        </hashTree>
+                        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                          <stringProp name="CounterConfig.start">1</stringProp>
+                          <stringProp name="CounterConfig.end"></stringProp>
+                          <stringProp name="CounterConfig.incr">1</stringProp>
+                          <stringProp name="CounterConfig.name">counterF1_7_5</stringProp>
+                          <stringProp name="CounterConfig.format"></stringProp>
+                          <boolProp name="CounterConfig.per_user">true</boolProp>
+                          <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+                        </CounterConfig>
+                        <hashTree/>
+                      </hashTree>
+                      <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+                        <stringProp name="scriptLanguage">groovy</stringProp>
+                        <stringProp name="parameters"></stringProp>
+                        <stringProp name="filename"></stringProp>
+                        <stringProp name="cacheKey">true</stringProp>
+                        <stringProp name="script">String assertion = vars.getObject(&quot;assert1_7_5&quot;)
+String message = vars.getObject(&quot;responseCheck&quot;)
+def failureMessage = &quot;&quot;;
+
+if(assertion.equals(&quot;false&quot;)) {
+	failureMessage += &quot;Return:&quot; + message; 
+	AssertionResult.setFailureMessage(failureMessage);
+	AssertionResult.setFailure(true); 
+}
+</stringProp>
+                      </JSR223Assertion>
+                      <hashTree/>
+                    </hashTree>
+                    <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="F1_7_6_select_number_for_contact_back" enabled="true">
+                      <boolProp name="TransactionController.includeTimers">false</boolProp>
+                      <boolProp name="TransactionController.parent">false</boolProp>
+                    </TransactionController>
+                    <hashTree>
+                      <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="F1_7_6_select_number_for_contact_back-0" enabled="true">
+                        <boolProp name="createNewConnection">false</boolProp>
+                        <boolProp name="TLS">false</boolProp>
+                        <stringProp name="server"></stringProp>
+                        <stringProp name="port">80</stringProp>
+                        <stringProp name="path"></stringProp>
+                        <stringProp name="connectTimeout">20000</stringProp>
+                        <boolProp name="binaryPayload">false</boolProp>
+                        <stringProp name="requestData">42/ws,[&quot;message&quot;,&quot;{\&quot;text\&quot;:\&quot;__NN_4ef26cf4.b30424|โทรศัพท์มือถือ\&quot;,\&quot;token\&quot;:\&quot;${token}\&quot;}&quot;]</stringProp>
+                        <stringProp name="readTimeout">${timeout}</stringProp>
+                        <boolProp name="loadDataFromFile">false</boolProp>
+                        <stringProp name="dataFile"></stringProp>
+                      </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+                      <hashTree>
+                        <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                          <stringProp name="scriptLanguage">groovy</stringProp>
+                          <stringProp name="parameters"></stringProp>
+                          <stringProp name="filename"></stringProp>
+                          <stringProp name="cacheKey">true</stringProp>
+                          <stringProp name="script">vars.putObject(&quot;loop&quot;, &quot;yes&quot;)
+vars.putObject(&quot;assert1_7_6&quot;, &quot;&quot;)</stringProp>
+                        </JSR223PostProcessor>
+                        <hashTree/>
+                      </hashTree>
+                      <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
+                        <stringProp name="WhileController.condition">${__jexl3((&quot;${loop}&quot;==&quot;yes&quot; &amp;&amp; ${counterF1_7_6} &lt; 4),)}</stringProp>
+                      </WhileController>
+                      <hashTree>
+                        <eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler" testname="F1_7_6_select_number_for_contact_back-1" enabled="true">
+                          <boolProp name="TLS">false</boolProp>
+                          <stringProp name="server"></stringProp>
+                          <stringProp name="port">80</stringProp>
+                          <stringProp name="path"></stringProp>
+                          <stringProp name="connectTimeout">20000</stringProp>
+                          <stringProp name="dataType">Text</stringProp>
+                          <boolProp name="createNewConnection">false</boolProp>
+                          <stringProp name="readTimeout">${timeout}</stringProp>
+                          <boolProp name="optional">false</boolProp>
+                        </eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler>
+                        <hashTree>
+                          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                            <stringProp name="scriptLanguage">groovy</stringProp>
+                            <stringProp name="parameters"></stringProp>
+                            <stringProp name="filename"></stringProp>
+                            <stringProp name="cacheKey">true</stringProp>
+                            <stringProp name="script">String response1 = prev.getResponseDataAsString();
+String count = vars.getObject(&quot;counterF1_7_6&quot;)
+String expected = &quot;คุณต้องการให้เจ้าหน้าที่ศูนย์ลูกค้าสัมพันธ์ติดต่อกลับที่เบอร์โทรศัพท์&quot;
+String timeout = &quot;SET_TIMEOUT&quot;
+vars.putObject(&quot;responseCheck&quot;, response1)
+if (response1.contains(expected)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_6&quot;, &quot;true&quot;)
+
+} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_6&quot;, &quot;false&quot;)
+
+} else if (count.equals(&quot;4&quot;)) {
+	vars.putObject(&quot;assert1_7_6&quot;, &quot;false&quot;)
+}
+</stringProp>
+                          </JSR223PostProcessor>
+                          <hashTree/>
+                        </hashTree>
+                        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                          <stringProp name="CounterConfig.start">1</stringProp>
+                          <stringProp name="CounterConfig.end"></stringProp>
+                          <stringProp name="CounterConfig.incr">1</stringProp>
+                          <stringProp name="CounterConfig.name">counterF1_7_6</stringProp>
+                          <stringProp name="CounterConfig.format"></stringProp>
+                          <boolProp name="CounterConfig.per_user">true</boolProp>
+                          <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+                        </CounterConfig>
+                        <hashTree/>
+                      </hashTree>
+                      <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+                        <stringProp name="scriptLanguage">groovy</stringProp>
+                        <stringProp name="parameters"></stringProp>
+                        <stringProp name="filename"></stringProp>
+                        <stringProp name="cacheKey">true</stringProp>
+                        <stringProp name="script">String assertion = vars.getObject(&quot;assert1_7_6&quot;)
+String message = vars.getObject(&quot;responseCheck&quot;)
+def failureMessage = &quot;&quot;;
+
+if(assertion.equals(&quot;false&quot;)) {
+	failureMessage += &quot;Return:&quot; + message; 
+	AssertionResult.setFailureMessage(failureMessage);
+	AssertionResult.setFailure(true); 
+}
+</stringProp>
+                      </JSR223Assertion>
+                      <hashTree/>
+                    </hashTree>
+                    <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="F1_7_7_select_number_for_contact_back_confirm" enabled="true">
+                      <boolProp name="TransactionController.includeTimers">false</boolProp>
+                      <boolProp name="TransactionController.parent">false</boolProp>
+                    </TransactionController>
+                    <hashTree>
+                      <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="F1_7_7_select_number_for_contact_back_confirm-0" enabled="true">
+                        <boolProp name="createNewConnection">false</boolProp>
+                        <boolProp name="TLS">false</boolProp>
+                        <stringProp name="server"></stringProp>
+                        <stringProp name="port">80</stringProp>
+                        <stringProp name="path"></stringProp>
+                        <stringProp name="connectTimeout">20000</stringProp>
+                        <boolProp name="binaryPayload">false</boolProp>
+                        <stringProp name="requestData">42/ws,[&quot;message&quot;,&quot;{\&quot;text\&quot;:\&quot;__NN_cce8b403.c28798|ยืนยัน\&quot;,\&quot;token\&quot;:\&quot;${token}\&quot;}&quot;]</stringProp>
+                        <stringProp name="readTimeout">${timeout}</stringProp>
+                        <boolProp name="loadDataFromFile">false</boolProp>
+                        <stringProp name="dataFile"></stringProp>
+                      </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+                      <hashTree>
+                        <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                          <stringProp name="scriptLanguage">groovy</stringProp>
+                          <stringProp name="parameters"></stringProp>
+                          <stringProp name="filename"></stringProp>
+                          <stringProp name="cacheKey">true</stringProp>
+                          <stringProp name="script">vars.putObject(&quot;loop&quot;, &quot;yes&quot;)
+vars.putObject(&quot;assert1_7_7&quot;, &quot;&quot;)</stringProp>
+                        </JSR223PostProcessor>
+                        <hashTree/>
+                      </hashTree>
+                      <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
+                        <stringProp name="WhileController.condition">${__jexl3((&quot;${loop}&quot;==&quot;yes&quot; &amp;&amp; ${counterF1_7_7} &lt; 4),)}</stringProp>
+                      </WhileController>
+                      <hashTree>
+                        <eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler" testname="F1_7_7_select_number_for_contact_back_confirm-1" enabled="true">
+                          <boolProp name="TLS">false</boolProp>
+                          <stringProp name="server"></stringProp>
+                          <stringProp name="port">80</stringProp>
+                          <stringProp name="path"></stringProp>
+                          <stringProp name="connectTimeout">20000</stringProp>
+                          <stringProp name="dataType">Text</stringProp>
+                          <boolProp name="createNewConnection">false</boolProp>
+                          <stringProp name="readTimeout">${timeout}</stringProp>
+                          <boolProp name="optional">false</boolProp>
+                        </eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler>
+                        <hashTree>
+                          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                            <stringProp name="scriptLanguage">groovy</stringProp>
+                            <stringProp name="parameters"></stringProp>
+                            <stringProp name="filename"></stringProp>
+                            <stringProp name="cacheKey">true</stringProp>
+                            <stringProp name="script">String response1 = prev.getResponseDataAsString();
+String count = vars.getObject(&quot;counterF1_7_7&quot;)
+String expected = &quot;ยินดีค่ะ Emma จะประสานงานกับเจ้าหน้าที่ศูนย์ลูกค้าสัมพันธ์ให้ติดต่อไปยังโทรศัพท์มือถือที่คุณแจ้งไว้โดยเร็วที่สุดนะคะ &quot;
+String timeout = &quot;SET_TIMEOUT&quot;
+vars.putObject(&quot;responseCheck&quot;, response1)
+if (response1.contains(expected)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_7&quot;, &quot;true&quot;)
+
+} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_7&quot;, &quot;false&quot;)
+
+} else if (count.equals(&quot;4&quot;)) {
+	vars.putObject(&quot;assert1_7_7&quot;, &quot;false&quot;)
+}
+</stringProp>
+                          </JSR223PostProcessor>
+                          <hashTree/>
+                        </hashTree>
+                        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                          <stringProp name="CounterConfig.start">1</stringProp>
+                          <stringProp name="CounterConfig.end"></stringProp>
+                          <stringProp name="CounterConfig.incr">1</stringProp>
+                          <stringProp name="CounterConfig.name">counterF1_7_7</stringProp>
+                          <stringProp name="CounterConfig.format"></stringProp>
+                          <boolProp name="CounterConfig.per_user">true</boolProp>
+                          <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+                        </CounterConfig>
+                        <hashTree/>
+                      </hashTree>
+                      <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+                        <stringProp name="scriptLanguage">groovy</stringProp>
+                        <stringProp name="parameters"></stringProp>
+                        <stringProp name="filename"></stringProp>
+                        <stringProp name="cacheKey">true</stringProp>
+                        <stringProp name="script">String assertion = vars.getObject(&quot;assert1_7_7&quot;)
+String message = vars.getObject(&quot;responseCheck&quot;)
+def failureMessage = &quot;&quot;;
+
+if(assertion.equals(&quot;false&quot;)) {
+	failureMessage += &quot;Return:&quot; + message; 
+	AssertionResult.setFailureMessage(failureMessage);
+	AssertionResult.setFailure(true); 
+}
+</stringProp>
+                      </JSR223Assertion>
+                      <hashTree/>
+                    </hashTree>
+                  </hashTree>
+                  <IfController guiclass="IfControllerPanel" testclass="IfController" testname="not_has_policy" enabled="true">
+                    <stringProp name="IfController.condition">${__jexl3(&quot;${assert1_7_3_is_have_policy}&quot; == &quot;false&quot;,)}</stringProp>
+                    <boolProp name="IfController.evaluateAll">false</boolProp>
+                    <boolProp name="IfController.useExpression">true</boolProp>
+                  </IfController>
+                  <hashTree>
+                    <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="F1_7_8_tracking_claim_status_add" enabled="true">
+                      <boolProp name="TransactionController.includeTimers">false</boolProp>
+                      <boolProp name="TransactionController.parent">false</boolProp>
+                    </TransactionController>
+                    <hashTree>
+                      <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="F1_7_8_tracking_claim_status_add-0" enabled="true">
+                        <boolProp name="createNewConnection">false</boolProp>
+                        <boolProp name="TLS">false</boolProp>
+                        <stringProp name="server"></stringProp>
+                        <stringProp name="port">80</stringProp>
+                        <stringProp name="path"></stringProp>
+                        <stringProp name="connectTimeout">20000</stringProp>
+                        <boolProp name="binaryPayload">false</boolProp>
+                        <stringProp name="requestData">42/ws,[&quot;message&quot;,&quot;{\&quot;text\&quot;:\&quot;__NN_9558f2f.b09ed1|ต้องการ\&quot;,\&quot;token\&quot;:\&quot;${token}\&quot;}&quot;]</stringProp>
+                        <stringProp name="readTimeout">${timeout}</stringProp>
+                        <boolProp name="loadDataFromFile">false</boolProp>
+                        <stringProp name="dataFile"></stringProp>
+                      </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+                      <hashTree>
+                        <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                          <stringProp name="scriptLanguage">groovy</stringProp>
+                          <stringProp name="parameters"></stringProp>
+                          <stringProp name="filename"></stringProp>
+                          <stringProp name="cacheKey">true</stringProp>
+                          <stringProp name="script">vars.putObject(&quot;loop&quot;, &quot;yes&quot;)
+vars.putObject(&quot;assert1_7_8&quot;, &quot;&quot;)</stringProp>
+                        </JSR223PostProcessor>
+                        <hashTree/>
+                      </hashTree>
+                      <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
+                        <stringProp name="WhileController.condition">${__jexl3((&quot;${loop}&quot;==&quot;yes&quot; &amp;&amp; ${counterF1_7_8} &lt; 5),)}</stringProp>
+                      </WhileController>
+                      <hashTree>
+                        <eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler" testname="F1_7_8_tracking_claim_status_add-1" enabled="true">
+                          <boolProp name="TLS">false</boolProp>
+                          <stringProp name="server"></stringProp>
+                          <stringProp name="port">80</stringProp>
+                          <stringProp name="path"></stringProp>
+                          <stringProp name="connectTimeout">20000</stringProp>
+                          <stringProp name="dataType">Text</stringProp>
+                          <boolProp name="createNewConnection">false</boolProp>
+                          <stringProp name="readTimeout">${timeout}</stringProp>
+                          <boolProp name="optional">false</boolProp>
+                        </eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler>
+                        <hashTree>
+                          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                            <stringProp name="scriptLanguage">groovy</stringProp>
+                            <stringProp name="parameters"></stringProp>
+                            <stringProp name="filename"></stringProp>
+                            <stringProp name="cacheKey">true</stringProp>
+                            <stringProp name="script">String response1 = prev.getResponseDataAsString();
+String count = vars.getObject(&quot;counterF1_7_8&quot;)
+String expected = &quot;ยินดีค่ะ ☺️&quot;
+
+vars.putObject(&quot;responseCheck&quot;, response1)
+
+
+if (response1.contains(expected)) {
+
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_8&quot;, &quot;true&quot;)
+
+} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
+
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_8&quot;, &quot;false&quot;)
+
+} else if (count.equals(&quot;4&quot;)) {
+	vars.putObject(&quot;assert1_7_8&quot;, &quot;false&quot;)
+
+}</stringProp>
+                          </JSR223PostProcessor>
+                          <hashTree/>
+                        </hashTree>
+                        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                          <stringProp name="CounterConfig.start">1</stringProp>
+                          <stringProp name="CounterConfig.end"></stringProp>
+                          <stringProp name="CounterConfig.incr">1</stringProp>
+                          <stringProp name="CounterConfig.name">counterF1_7_8</stringProp>
+                          <stringProp name="CounterConfig.format"></stringProp>
+                          <boolProp name="CounterConfig.per_user">true</boolProp>
+                          <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+                        </CounterConfig>
+                        <hashTree/>
+                      </hashTree>
+                      <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+                        <stringProp name="scriptLanguage">groovy</stringProp>
+                        <stringProp name="parameters"></stringProp>
+                        <stringProp name="filename"></stringProp>
+                        <stringProp name="cacheKey">true</stringProp>
+                        <stringProp name="script">String assertion = vars.getObject(&quot;assert1_7_8&quot;)
+String message = vars.getObject(&quot;responseCheck&quot;)
+
+def failureMessage = &quot;&quot;;
+
+if(assertion.equals(&quot;false&quot;)) {
+	failureMessage += &quot;Return:&quot; + message; 
+	AssertionResult.setFailureMessage(failureMessage);
+	AssertionResult.setFailure(true); 
+}</stringProp>
+                      </JSR223Assertion>
+                      <hashTree/>
+                    </hashTree>
+                    <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="F1_7_9_tracking_claim_status_not_add" enabled="true">
+                      <boolProp name="TransactionController.includeTimers">false</boolProp>
+                      <boolProp name="TransactionController.parent">false</boolProp>
+                    </TransactionController>
+                    <hashTree>
+                      <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="F1_7_9_tracking_claim_status_not_add-0" enabled="true">
+                        <boolProp name="createNewConnection">false</boolProp>
+                        <boolProp name="TLS">false</boolProp>
+                        <stringProp name="server"></stringProp>
+                        <stringProp name="port">80</stringProp>
+                        <stringProp name="path"></stringProp>
+                        <stringProp name="connectTimeout">20000</stringProp>
+                        <boolProp name="binaryPayload">false</boolProp>
+                        <stringProp name="requestData">42/ws,[&quot;message&quot;,&quot;{\&quot;text\&quot;:\&quot;__NN_9558f2f.b09ed1|ไม่​ต้อง​การ\&quot;,\&quot;token\&quot;:\&quot;${token}\&quot;}&quot;]</stringProp>
+                        <stringProp name="readTimeout">${timeout}</stringProp>
+                        <boolProp name="loadDataFromFile">false</boolProp>
+                        <stringProp name="dataFile"></stringProp>
+                      </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+                      <hashTree>
+                        <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                          <stringProp name="scriptLanguage">groovy</stringProp>
+                          <stringProp name="parameters"></stringProp>
+                          <stringProp name="filename"></stringProp>
+                          <stringProp name="cacheKey">true</stringProp>
+                          <stringProp name="script">vars.putObject(&quot;loop&quot;, &quot;yes&quot;)
+vars.putObject(&quot;assert1_7_9&quot;, &quot;&quot;)</stringProp>
+                        </JSR223PostProcessor>
+                        <hashTree/>
+                      </hashTree>
+                      <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
+                        <stringProp name="WhileController.condition">${__jexl3((&quot;${loop}&quot;==&quot;yes&quot; &amp;&amp; ${counterF1_7_9} &lt; 5),)}</stringProp>
+                      </WhileController>
+                      <hashTree>
+                        <eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler" testname="F1_7_9_tracking_claim_status_not_add-1" enabled="true">
+                          <boolProp name="TLS">false</boolProp>
+                          <stringProp name="server"></stringProp>
+                          <stringProp name="port">80</stringProp>
+                          <stringProp name="path"></stringProp>
+                          <stringProp name="connectTimeout">20000</stringProp>
+                          <stringProp name="dataType">Text</stringProp>
+                          <boolProp name="createNewConnection">false</boolProp>
+                          <stringProp name="readTimeout">${timeout}</stringProp>
+                          <boolProp name="optional">false</boolProp>
+                        </eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler>
+                        <hashTree>
+                          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                            <stringProp name="scriptLanguage">groovy</stringProp>
+                            <stringProp name="parameters"></stringProp>
+                            <stringProp name="filename"></stringProp>
+                            <stringProp name="cacheKey">true</stringProp>
+                            <stringProp name="script">String response1 = prev.getResponseDataAsString();
+String count = vars.getObject(&quot;counterF1_7_9&quot;)
+String expected = &quot;หากคุณต้องการทำรายการอื่นๆ หรือจบบทสนทนา&quot;
+
+vars.putObject(&quot;responseCheck&quot;, response1)
+
+
+if (response1.contains(expected)) {
+
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_9&quot;, &quot;true&quot;)
+
+} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
+
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_9&quot;, &quot;false&quot;)
+
+} else if (count.equals(&quot;4&quot;)) {
+	vars.putObject(&quot;assert1_7_9&quot;, &quot;false&quot;)
+
+}</stringProp>
+                          </JSR223PostProcessor>
+                          <hashTree/>
+                        </hashTree>
+                        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                          <stringProp name="CounterConfig.start">1</stringProp>
+                          <stringProp name="CounterConfig.end"></stringProp>
+                          <stringProp name="CounterConfig.incr">1</stringProp>
+                          <stringProp name="CounterConfig.name">counterF1_7_9</stringProp>
+                          <stringProp name="CounterConfig.format"></stringProp>
+                          <boolProp name="CounterConfig.per_user">true</boolProp>
+                          <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+                        </CounterConfig>
+                        <hashTree/>
+                      </hashTree>
+                      <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+                        <stringProp name="scriptLanguage">groovy</stringProp>
+                        <stringProp name="parameters"></stringProp>
+                        <stringProp name="filename"></stringProp>
+                        <stringProp name="cacheKey">true</stringProp>
+                        <stringProp name="script">String assertion = vars.getObject(&quot;assert1_7_9&quot;)
+String message = vars.getObject(&quot;responseCheck&quot;)
+
+def failureMessage = &quot;&quot;;
+
+if(assertion.equals(&quot;false&quot;)) {
+	failureMessage += &quot;Return:&quot; + message; 
+	AssertionResult.setFailureMessage(failureMessage);
+	AssertionResult.setFailure(true); 
+}</stringProp>
+                      </JSR223Assertion>
+                      <hashTree/>
+                    </hashTree>
+                  </hashTree>
+                </hashTree>
               </hashTree>
             </hashTree>
           </hashTree>

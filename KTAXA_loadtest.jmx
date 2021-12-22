@@ -5307,11 +5307,16 @@ vars.putObject(&quot;assert2_5_1&quot;, &quot;&quot;)</stringProp>
                         <stringProp name="script">String response1 = prev.getResponseDataAsString();
 String count = vars.getObject(&quot;counterF2_5_1&quot;)
 String expected = &quot;ท่านสามารถใช้สิทธิค่ารักษาพยาบาล กรณีเจ็บป่วย หลังจากพ้นระยะเวลา 30 วัน&quot;
-
+String expected2 = &quot;กรมธรรม์นี้ไม่มีความคุ้มครองค่ารักษาพยาบาลในฐานะผู้ป่วยนอก (OPD)&quot;
 vars.putObject(&quot;responseCheck&quot;, response1)
 
 
 if (response1.contains(expected)) {
+
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert2_5_1&quot;, &quot;true&quot;)
+
+}else if (response1.contains(expected2)) {
 
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
 	vars.putObject(&quot;assert2_5_1&quot;, &quot;true&quot;)
@@ -6308,17 +6313,19 @@ vars.putObject(&quot;responseCheck&quot;, response1)
 
 log.info(&quot;Check response&quot; + counter + &quot;: &quot; + response1 );
 
+
 if (response1.contains(expected)){
 		vars.putObject(&quot;assert3_2_1&quot;, &quot;true&quot;)
 		varify1 = vars.getObject(&quot;assert3_2_1&quot;)
 		
-} else if (response1.contains(expected1)) {
+} 
+if (response1.contains(expected1)) {
 		vars.putObject(&quot;assert3_2_2&quot;, &quot;true&quot;)	
 		varify2 = vars.getObject(&quot;assert3_2_2&quot;)
 	
 }
 
-if (counter &gt; 2 &amp;&amp; varify1.equals(&quot;true&quot;) &amp;&amp; varify2.equals(&quot;true&quot;)) {
+if (varify1.equals(&quot;true&quot;) &amp;&amp; varify2.equals(&quot;true&quot;)) {
 	
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
 	vars.putObject(&quot;assert3_2&quot;, &quot;true&quot;)
@@ -6426,7 +6433,7 @@ vars.putObject(&quot;assert3_3_3&quot;, &quot;&quot;)</stringProp>
 String count = vars.getObject(&quot;counterF3_3&quot;)
 String expected = &quot;บมจ.กรุงไทย-แอกซ่า ประกันชีวิต (สาขาชลบุรี) 39/4 หมู่ 3 ต.ห้วยกะปิ อ.เมือง จ.ชลบุรี 20000&quot;
 String expected1 = &quot;ดูแผนที่&quot;
-String expected2 = &quot;หากคุณต้องการทำรายการอื่น ๆ หรือจบบทสนทนา สามารถเลือกกดที่เมนูด้านล่างนี้ได้เลยค่ะ&quot;
+String expected2 = &quot;หากคุณต้องการทำรายการอื่นๆ หรือจบบทสนทนา 😊 สามารถเลือกกดที่เมนูด้านล่างนี้ได้เลยค่ะ&quot;
 String timeout = &quot;SET_TIMEOUT&quot;
 String varify1 = vars.getObject(&quot;assert3_3_1&quot;)
 String varify2 = vars.getObject(&quot;assert3_3_2&quot;)
@@ -6440,16 +6447,21 @@ if (response1.contains(expected)){
 		vars.putObject(&quot;assert3_3_1&quot;, &quot;true&quot;)
 		varify1 = vars.getObject(&quot;assert3_3_1&quot;)
 		
-} else if (response1.contains(expected1)) {
+}
+if (response1.contains(expected1)) {
 		vars.putObject(&quot;assert3_3_2&quot;, &quot;true&quot;)	
 		varify2 = vars.getObject(&quot;assert3_3_2&quot;)
 	
-} else if (response1.contains(expected2)) {
+}
+if (response1.contains(expected2)) {
 		vars.putObject(&quot;assert3_3_3&quot;, &quot;true&quot;)	
 		varify3 = vars.getObject(&quot;assert3_3_3&quot;)
 }
+log.info(&quot;varify1:&quot;+varify1)
+log.info(&quot;varify2:&quot;+varify2)
+log.info(&quot;varify3:&quot;+varify3)
 
-if (counter &gt; 3 &amp;&amp; varify1.equals(&quot;true&quot;) &amp;&amp; varify2.equals(&quot;true&quot;) &amp;&amp; varify3.equals(&quot;true&quot;)) {
+if (varify1.equals(&quot;true&quot;) &amp;&amp; varify2.equals(&quot;true&quot;) &amp;&amp; varify3.equals(&quot;true&quot;)) {
 	
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
 	vars.putObject(&quot;assert3_3&quot;, &quot;true&quot;)
@@ -6626,7 +6638,7 @@ if(assertion.equals(&quot;false&quot;)) {
                 <stringProp name="path"></stringProp>
                 <stringProp name="connectTimeout">20000</stringProp>
                 <boolProp name="binaryPayload">false</boolProp>
-                <stringProp name="requestData">42/ws,[&quot;message&quot;,&quot;{\&quot;text\&quot;:\&quot;__NN_65a90434.fa287c|btn|การเปลี่ยนแปลงข้อมูลกรมธรรม์|เลือก\&quot;,\&quot;token\&quot;:\&quot;${token}\&quot;}&quot;]</stringProp>
+                <stringProp name="requestData">42/ws,[&quot;message&quot;,&quot;{\&quot;text\&quot;:\&quot;__NN_d5795cbf.dcf1b|btn|การเปลี่ยนแปลง​ข้อมูล​กรมธรรม์|เลือก\&quot;,\&quot;token\&quot;:\&quot;${token}\&quot;}&quot;]</stringProp>
                 <stringProp name="readTimeout">${timeout}</stringProp>
                 <boolProp name="loadDataFromFile">false</boolProp>
                 <stringProp name="dataFile"></stringProp>
@@ -6665,7 +6677,7 @@ vars.putObject(&quot;assert1_2&quot;, &quot;&quot;)</stringProp>
                     <stringProp name="cacheKey">true</stringProp>
                     <stringProp name="script">String response1 = prev.getResponseDataAsString();
 String count = vars.getObject(&quot;counterF1_2&quot;)
-String expected = &quot;กรุณาเลือกที่เมนูด้านล่างที่คุณต้องการสอบถามได้เลยค่ะ&quot;
+String expected = &quot;การเปลี่ยนแปลงข้อมูลกรมธรรม์ มีทั้งหมด 8 หัวข้อ คุณสามารถเลือกที่เมนูด้านล่าง เพื่อดูรายละเอียดเพิ่มเติมได้เลยค่ะ&quot;
 String timeout = &quot;SET_TIMEOUT&quot;
 vars.putObject(&quot;responseCheck&quot;, response1)
 if (response1.contains(expected)) {
@@ -7500,7 +7512,7 @@ vars.putObject(&quot;assert1_8_2&quot;, &quot;&quot;)
                                 <stringProp name="cacheKey">true</stringProp>
                                 <stringProp name="script">String response1 = prev.getResponseDataAsString();
 String count = vars.getObject(&quot;counterF1_8_2&quot;)
-String expected = &quot;Please confirm the new address you have provided is correct.&quot;
+String expected = &quot;กรุณายืนยันข้อมูลที่อยู่ที่คุณต้องการเปลี่ยนค่ะ&quot;
 String timeout = &quot;SET_TIMEOUT&quot;
 vars.putObject(&quot;responseCheck&quot;, response1)
 
@@ -7816,7 +7828,7 @@ vars.putObject(&quot;assert1_9_2&quot;, &quot;&quot;)
                                 <stringProp name="cacheKey">true</stringProp>
                                 <stringProp name="script">String response1 = prev.getResponseDataAsString();
 String count = vars.getObject(&quot;counterF1_9_2&quot;)
-String expected = &quot;Please confirm the new contact number you have provided is correct.&quot;
+String expected = &quot;กรุณายืนยันข้อมูลเบอร์โทรที่คุณต้องการเปลี่ยนค่ะ&quot;
 String timeout = &quot;SET_TIMEOUT&quot;
 vars.putObject(&quot;responseCheck&quot;, response1)
 
@@ -9250,7 +9262,7 @@ vars.putObject(&quot;assert1_9_2&quot;, &quot;&quot;)
                                 <stringProp name="cacheKey">true</stringProp>
                                 <stringProp name="script">String response1 = prev.getResponseDataAsString();
 String count = vars.getObject(&quot;counterF1_9_2&quot;)
-String expected = &quot;Please confirm the new contact number you have provided is correct.&quot;
+String expected = &quot;กรุณายืนยันข้อมูลเบอร์โทรที่คุณต้องการเปลี่ยนค่ะ&quot;
 String timeout = &quot;SET_TIMEOUT&quot;
 vars.putObject(&quot;responseCheck&quot;, response1)
 
@@ -9795,7 +9807,7 @@ vars.putObject(&quot;assert1_11&quot;, &quot;&quot;)</stringProp>
                               <stringProp name="script">String response1 = prev.getResponseDataAsString();
 String count = vars.getObject(&quot;counterF1_11&quot;)
 String expected = &quot;Emma ได้ประสานงานขอเปลี่ยนข้อมูลไปยังเจ้าหน้าที่ศูนย์ลูกค้าสัมพันธ์ให้คุณเรียบร้อยแล้วนะคะ&quot;
-String expected1 = &quot;หากคุณต้องการทำรายการอื่น ๆ หรือจบบทสนทนา สามารถเลือกกดที่เมนูด้านล่างนี้ได้เลยค่ะ&quot;
+String expected1 = &quot;หากคุณต้องการทำรายการอื่นๆ หรือจบบทสนทนา 😊 สามารถเลือกกดที่เมนูด้านล่างนี้ได้เลยค่ะ&quot;
 String timeout = &quot;SET_TIMEOUT&quot;
 String varify1 = vars.getObject(&quot;assert1_11_1&quot;)
 String varify2 = vars.getObject(&quot;assert1_11_2&quot;)
@@ -9808,13 +9820,13 @@ if (response1.contains(expected)){
 		vars.putObject(&quot;assert1_11_1&quot;, &quot;true&quot;)
 		varify1 = vars.getObject(&quot;assert1_11_1&quot;)
 		
-} else if (response1.contains(expected1)) {
+}if (response1.contains(expected1)) {
 		vars.putObject(&quot;assert1_11_2&quot;, &quot;true&quot;)	
 		varify2 = vars.getObject(&quot;assert1_11_2&quot;)
 	
 }
 
-if (counter &gt; 2 &amp;&amp; varify1.equals(&quot;true&quot;) &amp;&amp; varify2.equals(&quot;true&quot;)) {
+if (varify1.equals(&quot;true&quot;) &amp;&amp; varify2.equals(&quot;true&quot;)) {
 	
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
 	vars.putObject(&quot;assert1_11&quot;, &quot;true&quot;)
@@ -10248,13 +10260,18 @@ vars.putObject(&quot;assert1_7_2_is_out_of_service&quot;, &quot;false&quot;)</st
                       <stringProp name="script">String response1 = prev.getResponseDataAsString();
 String count = vars.getObject(&quot;counterF1_7_2&quot;)
 String expected = &quot;คุณต้องการให้เจ้าหน้าที่ติดต่อกลับในภายหลังหรือไม่คะ&quot;
+String expected2 = &quot;คุณต้องการติดต่อเจ้าหน้าที่หรือไม่คะ&quot;
 String timeout = &quot;SET_TIMEOUT&quot;
 vars.putObject(&quot;responseCheck&quot;, response1)
 if (response1.contains(expected)) {
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
 	vars.putObject(&quot;assert1_7_2&quot;, &quot;true&quot;)
 	vars.putObject(&quot;assert1_7_2_is_out_of_service&quot;, &quot;true&quot;)
-} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
+}else if (response1.contains(expected2)){
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	vars.putObject(&quot;assert1_7_2&quot;, &quot;true&quot;)
+	vars.putObject(&quot;assert1_7_2_is_out_of_service&quot;, &quot;false&quot;)
+	} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
 	vars.putObject(&quot;assert1_7_2&quot;, &quot;false&quot;)
 
@@ -10464,7 +10481,7 @@ vars.putObject(&quot;assert1_7_4&quot;, &quot;&quot;)</stringProp>
                             <stringProp name="cacheKey">true</stringProp>
                             <stringProp name="script">String response1 = prev.getResponseDataAsString();
 String count = vars.getObject(&quot;counterF1_7_4&quot;)
-String expected = &quot;กรุณาเลือกที่เมนูด้านล่างที่คุณต้องการสอบถามได้เลยค่ะ&quot;
+String expected = &quot;กรุณาเลือกงวดการชำระเบี้ยประกันค่ะ&quot;
 String timeout = &quot;SET_TIMEOUT&quot;
 vars.putObject(&quot;responseCheck&quot;, response1)
 if (response1.contains(expected)) {

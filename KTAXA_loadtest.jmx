@@ -5308,15 +5308,12 @@ vars.putObject(&quot;assert2_5_1&quot;, &quot;&quot;)</stringProp>
 String count = vars.getObject(&quot;counterF2_5_1&quot;)
 String expected = &quot;ท่านสามารถใช้สิทธิค่ารักษาพยาบาล กรณีเจ็บป่วย หลังจากพ้นระยะเวลา 30 วัน&quot;
 String expected2 = &quot;กรมธรรม์นี้ไม่มีความคุ้มครองค่ารักษาพยาบาลในฐานะผู้ป่วยนอก (OPD)&quot;
+String expected3 = &quot;เนื่องจากกรมธรรม์ของท่านเลยวันครบกำหนดชำระเบี้ยประกัน กรุณาชำระเบี้ยประกัน&quot;
+String expected4 = &quot;กรมธรรม์นี้ไม่มีความคุ้มครองค่ารักษาพยาบาลในฐานะผู้ป่วยนอก (OPD)&quot;
 vars.putObject(&quot;responseCheck&quot;, response1)
 
 
-if (response1.contains(expected)) {
-
-	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
-	vars.putObject(&quot;assert2_5_1&quot;, &quot;true&quot;)
-
-}else if (response1.contains(expected2)) {
+if (response1.contains(expected) || response1.contains(expected2) || response1.contains(expected3) || response1.contains(expected4)) {
 
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
 	vars.putObject(&quot;assert2_5_1&quot;, &quot;true&quot;)

@@ -11193,7 +11193,7 @@ vars.putObject(&quot;assert2_5_is_has_policy&quot;, &quot;false&quot;)</stringPr
                   <hashTree/>
                 </hashTree>
                 <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
-                  <stringProp name="WhileController.condition">${__jexl3((&quot;${loop}&quot;==&quot;yes&quot; &amp;&amp; ${counterF2_5} &lt; 5),)}</stringProp>
+                  <stringProp name="WhileController.condition">${__jexl3((&quot;${loop}&quot;==&quot;yes&quot; &amp;&amp; ${counterF2_5} &lt; 3),)}</stringProp>
                 </WhileController>
                 <hashTree>
                   <eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.SingleReadWebSocketSampler" testname="F2_5_select_ask_for_opd-1" enabled="true">
@@ -11222,7 +11222,6 @@ vars.putObject(&quot;responseCheck&quot;, response1)
 
 
 if (response1.contains(expected)) {
-
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
 	vars.putObject(&quot;assert2_5&quot;, &quot;true&quot;)
 	vars.putObject(&quot;assert2_5_is_has_policy&quot;, &quot;false&quot;)
@@ -11232,15 +11231,14 @@ if (response1.contains(expected)) {
 	vars.putObject(&quot;assert2_5&quot;, &quot;true&quot;)
 	vars.putObject(&quot;assert2_5_is_has_policy&quot;, &quot;true&quot;)
 	
-	} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
-
-	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
-	vars.putObject(&quot;assert2_5&quot;, &quot;false&quot;)
-
 } else if (count.equals(&quot;4&quot;)) {
-	vars.putObject(&quot;assert2_5&quot;, &quot;false&quot;)
+	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
+	String assertion = vars.getObject(&quot;assert2_5&quot;)
+	if(assertion.equals(&quot;&quot;)) {
+		vars.putObject(&quot;assert2_5&quot;, &quot;false&quot;)
+	}
 
-}</stringProp>
+} </stringProp>
                     </JSR223PostProcessor>
                     <hashTree/>
                   </hashTree>
@@ -11264,7 +11262,6 @@ if (response1.contains(expected)) {
 String message = vars.getObject(&quot;responseCheck&quot;)
 
 def failureMessage = &quot;&quot;;
-
 if(assertion.equals(&quot;false&quot;)) {
 	failureMessage += &quot;Return:&quot; + message; 
 	AssertionResult.setFailureMessage(failureMessage);
@@ -11338,20 +11335,14 @@ String expected3 = &quot;เนื่องจากกรมธรรม์ข�
 String expected4 = &quot;กรมธรรม์นี้ไม่มีความคุ้มครองค่ารักษาพยาบาลในฐานะผู้ป่วยนอก (OPD)&quot;
 vars.putObject(&quot;responseCheck&quot;, response1)
 
-
 if (response1.contains(expected) || response1.contains(expected2) || response1.contains(expected3) || response1.contains(expected4)) {
 
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
 	vars.putObject(&quot;assert2_5_1&quot;, &quot;true&quot;)
 
-} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
-
+} else if (count.equals(&quot;3&quot;)) {
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
 	vars.putObject(&quot;assert2_5_1&quot;, &quot;false&quot;)
-
-} else if (count.equals(&quot;4&quot;)) {
-	vars.putObject(&quot;assert2_5_1&quot;, &quot;false&quot;)
-
 }</stringProp>
                       </JSR223PostProcessor>
                       <hashTree/>
@@ -11454,12 +11445,9 @@ if (response1.contains(expected)) {
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
 	vars.putObject(&quot;assert2_5_2&quot;, &quot;true&quot;)
 
-} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
+} else if (count.equals(&quot;3&quot;)) {
 
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
-	vars.putObject(&quot;assert2_5_2&quot;, &quot;false&quot;)
-
-} else if (count.equals(&quot;4&quot;)) {
 	vars.putObject(&quot;assert2_5_2&quot;, &quot;false&quot;)
 
 }</stringProp>
@@ -11557,12 +11545,9 @@ if (response1.contains(expected)) {
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
 	vars.putObject(&quot;assert2_5_3&quot;, &quot;true&quot;)
 
-} else if (count.equals(&quot;3&quot;) &amp;&amp; !response1.contains(timeout)) {
+} else if (count.equals(&quot;3&quot;)) {
 
 	vars.putObject(&quot;loop&quot;, &quot;no&quot;)
-	vars.putObject(&quot;assert2_5_3&quot;, &quot;false&quot;)
-
-} else if (count.equals(&quot;4&quot;)) {
 	vars.putObject(&quot;assert2_5_3&quot;, &quot;false&quot;)
 
 }</stringProp>
